@@ -121,3 +121,78 @@
             const heartsArray = ['❤️', '💖', '💗', '💓', '💕'];
             heart.innerText = heartsArray[Math.floor(Math.random() * heartsArray.length)];
             heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 3 + 4 + 's';
+            heart.style.fontSize = Math.random() * 20 + 20 + 'px';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 7000);
+        }
+        setInterval(createHeart, 400);
+
+        function typeWriter(text, i) {
+            if (i < text.length) {
+                let currentText = text.substring(0, i + 1);
+                document.getElementById("typed-text").innerText = currentText;
+                
+                const cursor = document.createElement('span');
+                cursor.className = 'cursor';
+                cursor.innerHTML = '&nbsp;';
+                document.getElementById("typed-text").appendChild(cursor);
+
+                // პაუზის ლოგიკა: თუ წერტილია ან მძიმე, უფრო მეტხანს გაჩერდეს
+                let char = text.charAt(i);
+                let delay = 200; // ჩვეულებრივი ასო (ძალიან ნელი)
+                
+                if (char === '.' || char === ',') delay = 600;
+                if (char === '\n') delay = 800;
+
+                setTimeout(function() {
+                    typeWriter(text, i + 1)
+                }, delay);
+            }
+        }
+
+        function startSurprise() {
+            document.getElementById('page1').style.opacity = '0';
+            
+            setTimeout(() => {
+                document.getElementById('page1').style.display = 'none';
+                const page2 = document.getElementById('page2');
+                page2.style.opacity = '1';
+                page2.style.pointerEvents = 'auto';
+                
+                fireworks();
+                
+                setTimeout(() => {
+                    typeWriter(fullText, 0);
+                }, 1000);
+            }, 1500);
+        }
+
+        function fireworks() {
+            var end = Date.now() + (8 * 1000); 
+            var colors = ['#ff4081', '#ffffff', '#ff1493'];
+
+            (function frame() {
+                confetti({
+                    particleCount: 2,
+                    angle: 60,
+                    spread: 60,
+                    origin: { x: 0, y: 0.6 },
+                    colors: colors
+                });
+                confetti({
+                    particleCount: 2,
+                    angle: 120,
+                    spread: 60,
+                    origin: { x: 1, y: 0.6 },
+                    colors: colors
+                });
+
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            }());
+        }
+    </script>
+</body>
+</html>
